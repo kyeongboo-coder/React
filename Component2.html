@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <title>위니브 샵</title>
+    <link rel="stylesheet" href="./style/reset.css">
+    <link rel="stylesheet" href="./style/style.css">
+</head>
+
+<body>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        const data = fetch('http://test.api.weniv.co.kr/mall')
+            .then(productData => productData.json())
+            .then(productData => productData)
+            .then(productData => {
+                return productData;
+            })
+            .then(productData => {
+                return productData;
+            })
+            .then(productData => {
+                const main = document.createElement("main");
+                productData.forEach(item => {
+                    const ProductCard = document.createElement("article");
+                    const productName = document.createElement("h2");
+                    const productPrice = document.createElement("p");
+
+                    productName.textContent = `상품명 : ${item.productName}`;
+                    productPrice.textContent = `가격 : ${item.price}`;
+
+                    ProductCard.appendChild(productName);
+                    ProductCard.appendChild(productPrice);
+
+                    main.appendChild(ProductCard);
+                })
+                document.body.appendChild(main);
+            })
+
+        const Card = function (props) {
+            console.log(props.goods)
+            const url = 'http://test.api.weniv.co.kr/' + props.goods.thumbnailImg
+            return (
+                <li class="product-item">
+                    <div class="product-img">
+                        <img src={url} />
+                    </div>
+                    <strong class="product-name sl-ellipsis">{props.goods.productName}</strong>
+                    <button class="like-btn"></button>
+                    <div class="product-price">
+                        <strong class="price m-price">{props.goods.price}<span>원</span></strong>
+                    </div>
+                </li>
+            )
+        }
+
+        const Product = function (props) {
+            return (
+                <main class="product">
+                    <ul class="product-list">
+                        <Card goods={props.item[0]} />
+                        <Card goods={props.item[1]} />
+                        <Card goods={props.item[2]} />
+                        <Card goods={props.item[3]} />
+                        <Card goods={props.item[4]} />
+                        <Card goods={props.item[5]} />
+                        <Card goods={props.item[6]} />
+                    </ul>
+                </main>
+            )
+        }
+
+
+        const body = (
+            <div>
+                <Product item={data} />
+            </div>
+        )
+
+        const domContainer = document.querySelector('#root');
+        const root = ReactDOM.createRoot(domContainer);
+        root.render(body);
+
+    </script>
+</body>
+
+</html>
